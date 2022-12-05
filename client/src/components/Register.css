@@ -12,32 +12,32 @@ body{
     align-items: center;
     background: #23242b;
 }
-section{
+.register{
     position: relative;
-    width: 400px;
-    height: 450px;
+    width: 425px;
+    height: 520px;
     background-color: #1c1c1c;
     border-radius: 10px;
     overflow: hidden;
 }
-section::before{
+.register::before{
     content: '';
     right: 50%;
     top: -50%;
     position: absolute;
-    width: 400px;
-    height: 450px;
-    background: linear-gradient(0deg, transparent, #44f3ff, #44f3ff);/* 44b4ff*/
+    width: 425px;
+    height: 520px;
+    background: linear-gradient(0deg, transparent, #44f3ff, #44f3ff);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
 }
-section::after{
+.register::after{
     content: '';
     right: 50%;
     top: -50%;
     position: absolute;
-    width: 400px;
-    height: 450px;
+    width: 425px; 
+    height: 520px;
     background: linear-gradient(0deg, transparent, #44f3ff, #44f3ff);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -140,4 +140,4 @@ button{
     align-self: center;
     font-weight: 500;
     letter-spacing: .05em;
-}
+} /* 400-450*/

@@ -3,19 +3,26 @@ import { useState, useEffect } from "react";
 
 import './Register.css';
 
-import React from 'react'
+import React from 'react';
+
+const userRules = /^[a-zA-Z][a-zA-Z0-9_]{3,30}$/;
+const emailRules = /^(?=.*[a-z])(?=.*[@])(?!.*")(?=\S)(?!.*\")(?!.*\')(?!.*\;).{3,30}/;
+const passRules = /^(?=.*[a-z])(?!.*")(?=\S)(?!.*\")(?!.*\')(?!.*\;).{3,30}$/;
 
 function Register() {
 
     const [user, setUser] = useState('');
     const [validUser, setValidUser] = useState(false);
+    const [email, setEmail] = useState('');
+    const [validEmail, setValidEmail] = useState(false);
     const [pass, setPass] = useState('');
     const [validPass, setValidPass] = useState(false);
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         //console.log(user);
-        if (user !== " " & user !== "") {
+        const valid = userRules.test(user)
+        if (valid) {
             setValidUser(true);
         }
         else{
@@ -24,10 +31,22 @@ function Register() {
         //console.log(validUser);
     }, [user])
 
+    useEffect(() => {
+        //console.log(user);
+        const valid = emailRules.test(email)
+        if (valid) {
+            setValidEmail(true);
+        }
+        else{
+            setValidEmail(false);
+        }
+        //console.log(validUser);
+    }, [email])
 
     useEffect(() => {
         //console.log(pass);
-        if (pass !== " " & pass !== "") {
+        const valid = passRules.test(pass)
+        if (valid) {
             setValidPass(true);
         }
         else{
@@ -39,11 +58,11 @@ function Register() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(user, pass);
+        console.log(user, email, pass);
 
         try{
             // const response = await axios.post('/register',
-            //     JSON.stringify({user, pass}),
+            //     JSON.stringify({user, email, pass}),
             //     {
             //         headers: { 'Content-Type': 'application/json'},
             //         withCredentials: true
@@ -57,19 +76,28 @@ function Register() {
     }
 
     return (
-        <section>
+        <section className="register">
 
             <form onSubmit={handleSubmit}>
                 <h1>
-                    Register
+                    Rejestracja
                 </h1>
                 <div className="inputBox">
                     <input type="text" id="name"
+                    autoComplete="false"
                     onChange={(e) => setUser(e.target.value)}
                     required></input>
                     <label className="username">Username:</label>
                     <span></span>
-                </div>    
+                </div> 
+                <div className="inputBox">
+                    <input type="email" id="email"
+                    autoComplete="false"
+                    onChange={(e) => setEmail(e.target.value)}
+                    required></input>
+                    <label className="username">Email:</label>
+                    <span></span>
+                </div>   
                 <div className="inputBox">
                     <input type="password" id="password" 
                     onChange={(e) => setPass(e.target.value)}
@@ -79,7 +107,7 @@ function Register() {
                 </div>
                 <div className="options">
                     <a href="#">Zaloguj się</a>
-                    <button disabled={!validPass || !validUser ? true : false}>Sign up</button>
+                    <button disabled={!validPass || !validEmail || !validUser ? true : false}>Sign up</button>
                 </div>    
                 
             </form>
