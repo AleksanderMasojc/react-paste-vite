@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-//import axios from "../axios";
+import { useNavigate } from "react-router-dom";
+import axios from "../axios";
 
 import './Register.css';
 
@@ -18,6 +19,7 @@ function Register() {
     const [pass, setPass] = useState('');
     const [validPass, setValidPass] = useState(false);
     const [success, setSuccess] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         //console.log(user);
@@ -61,15 +63,24 @@ function Register() {
         console.log(user, email, pass);
 
         try{
-            // const response = await axios.post('/register',
-            //     JSON.stringify({user, email, pass}),
-            //     {
-            //         headers: { 'Content-Type': 'application/json'},
-            //         withCredentials: true
-            //     }
-            // );
-            // console.log(JSON.stringify(response));
+            const response = await axios.post('/auth/register',
+                JSON.stringify({nick: user, email, password: pass}),
+                {
+                    headers: { 'Content-Type': 'application/json'},
+                    withCredentials: true
+                }
+            );
+            //console.log(JSON.stringify(response));
             setSuccess(true);//nie wiem co tu redirect jakis? do login?
+            const userGet = await axios.get('/user',
+            {
+                headers: { 'Content-Type': 'application/json'},
+                withCredentials: true
+            }
+            );
+            const user = JSON.stringify(userGet?.data?.username).substring(1,JSON.stringify(userGet?.data?.username).length-1);
+            console.log(user);
+            navigate('/user/'+user);
         } catch(err){
             console.log(err);
         }

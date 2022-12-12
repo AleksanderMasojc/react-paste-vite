@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthProvider";
 import axios from "../axios";
 
@@ -12,7 +13,7 @@ const passRules = /^(?!.*")(?=\S)(?!.*\")(?!.*\')(?!.*\;).{2,30}$/;
 function Login() {
 
     const { setAuth } = useContext(AuthContext);
-
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [validEmail, setValidEmail] = useState(false);
     const [pass, setPass] = useState('');
@@ -44,7 +45,16 @@ function Login() {
                     withCredentials: true,
                 }
             );
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response));
+            const userGet = await axios.get('/user',
+            {
+                headers: { 'Content-Type': 'application/json'},
+                withCredentials: true
+            }
+            );
+            const user = JSON.stringify(userGet?.data?.username).substring(1,JSON.stringify(userGet?.data?.username).length-1);
+            console.log(user);
+            navigate('/user/'+user);
         } catch(err){
             console.log(err);
         }
@@ -53,7 +63,7 @@ function Login() {
     }
 
   return (
-    <section className="register">
+    <section className="login">
 
     <form onSubmit={handleSubmit}>
         <h1>
